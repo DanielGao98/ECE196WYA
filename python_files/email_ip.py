@@ -4,7 +4,7 @@ print('Enter Reciever\'s email')
 reciever = input()
 
 def get_ip():
-    return os.popen('hostname -I').read().split[0]
+    return os.popen('hostname -I').read().split()[0]
 
 def send(reciever = reciever):
     sender = 'wya196wya@gmail.com'
