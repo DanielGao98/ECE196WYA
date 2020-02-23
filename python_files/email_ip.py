@@ -1,6 +1,6 @@
 import smtplib
 import os
-
+print('Enter Reciever\'s email')
 reciever = input()
 
 def get_ip():
