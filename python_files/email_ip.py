@@ -11,12 +11,15 @@ def send():
     #Send the mail
     msg = "\n"+get_ip()  # The /n separates the message from the headers
 
-
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.ehlo()
-    server.starttls()
-    server.ehlo()
-    server.login(sender, password)
-    server.sendmail(sender, reciever, msg)
+    print("got ip " + msg)
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login(sender, password)
+        server.sendmail(sender, reciever, msg)
+    except:
+        print("Error: unable to send email")
 
 send()
