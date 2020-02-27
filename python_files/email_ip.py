@@ -9,7 +9,7 @@ def send():
     password = 'wya196wya'
     reciever = 'wya196wya@gmail.com'
     #Send the mail
-    msg = "\n"+get_ip()  # The /n separates the message from the headers
+    msg = "\nPI 2: "+get_ip()  # The /n separates the message from the headers
 
     print("got ip " + msg)
     try:
