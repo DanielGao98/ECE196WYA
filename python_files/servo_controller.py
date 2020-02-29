@@ -3,8 +3,6 @@ import time
 
 class servo_controller:
 
-    #servo = None
-
     def __init__(self):
         print("init servo_controller")
         self.servoPIN = 11  # change
@@ -13,40 +11,36 @@ class servo_controller:
         
         self.servo = GPIO.PWM(self.servoPIN, 50)  # GPIO 11 for PWM with 50Hz
         self.servo.start(0)  # Initialization
-        time.sleep(2)
-        #print("in init 1")
-        #self.servo.ChangeDutyCycle(2)
-        #time.sleep(0.5)
-        #print("in init 2")
-        #self.servo.ChangeDutyCycle(4) 
-        #time.sleep(0.5)
-        #self.servo.ChangeDutyCycle(11)
-        #time.sleep(0.5)
+        time.sleep(2) # wait 2 seconds
+        self.reset()
+        print("servo initialized and reset")
 
     def show(self):
         print("show()")
 
-
     def rotate(self, amount):
-        self.servo.ChangeDutyCycle(2 + float(amount/18))
-        print("in rotate 1")
-        #self.servo.ChangeDutyCycle(5)
-        #print("in rotate 2")
+        if float(amount) < 0 or float(amount) > 180:
+            print("invalid rotation angle")
+        else:
+            duty = 2 + float(amount/18) #duty 2 to 12 range 
+            self.servo.ChangeDutyCycle(duty)
+            time.sleep(0.5)
+            print("rotated servo position to " + str(amount) + "degrees")
+            self.wait()
+    
+    #move servo back to angle of zero
+    def reset(self):
+        self.servo.ChangeDutyCycle(2)
         time.sleep(0.5)
+        print("reset servo position to 0 degrees")
         self.wait()
 
     def wait(self):
-        #print("in wait 1")
         self.servo.ChangeDutyCycle(0)
         time.sleep(0.5)
-        #print("in wait 2")
+        print("in wait")
 
     def stop(self):
+        print("terminating servo")
         self.servo.stop()
         GPIO.cleanup()
-
-#if __name__ == "__main__":
-    #sc = servo_controller()
-    #sc.rotate(20)
-    #sc.stop()
-
