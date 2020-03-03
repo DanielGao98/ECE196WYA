@@ -15,8 +15,10 @@ import cv2
 
 from servo_controller import servo_controller as sc
 
-sc_pan = NONE
-sc_tilt = NONE
+#sc_pan = None
+#sc_tilt = NONE
+
+sc_pan = sc()
 
 # initialize servo controllers
 def init_servos():
@@ -100,8 +102,8 @@ def set_servos(pan, tlt):
 
 	# loop indefinitely
 	while True:
-		print("pan value is " + pan.value)
-		print("tilt value is " + tlt.value)
+		print("pan value is " + str(pan.value))
+		print("tilt value is " + str(tlt.value))
 
 		#pan to rotation angle
 		sc_pan.rotate(pan.value)
@@ -123,7 +125,7 @@ if __name__ == "__main__":
 	# start a manager for managing process-safe variables
 	with Manager() as manager:
 		# enable the servos
-		init_servos()
+		#init_servos()
 
 		# set integer values for the object center (x, y)-coordinates
 		centerX = manager.Value("i", 0)

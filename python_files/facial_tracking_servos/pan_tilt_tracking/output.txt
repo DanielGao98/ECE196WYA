@@ -1,0 +1,6 @@
+{'cascade': 'haarcascade_frontalface_default.xml'}
+init servo_controller
+pan and tilt servos initialized
+pan value is 0
+tilt value is 0
+Signal interrupt was detected

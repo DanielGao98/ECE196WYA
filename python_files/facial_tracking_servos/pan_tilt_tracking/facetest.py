@@ -7,7 +7,7 @@ from imutils.video import VideoStream
 from pyimagesearch.objcenter import ObjCenter
 from pyimagesearch.pid import PID
 import argparse
-import pantilthat
+#import pantilthat
 import signal
 import time
 import sys
