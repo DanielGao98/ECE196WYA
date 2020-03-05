@@ -1,5 +1,5 @@
 # USAGE
-# python pan_tilt_tracking.py --cascade haarcascade_frontalface_default.xml
+# python3 pan_tilt_tracking.py --cascade haarcascade_frontalface_default.xml
 
 # import necessary packages
 from multiprocessing import Manager
@@ -105,6 +105,7 @@ def set_servos(pan, tlt):
 		#pan to rotation angle
 		time.sleep(0.5)	
 		if sc_pan is not None:
+			print("HERE")
 			sc_pan.rotate(pan.value)
 		#tilt to rotation angle
 	#	sc_tilt.rotate(tlt.value)
