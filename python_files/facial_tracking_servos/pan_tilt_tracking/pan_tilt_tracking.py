@@ -15,7 +15,7 @@ import cv2
 
 from servo_controller import servo_controller as sc
 
-sc_pan = None
+sc_pan = sc()
 sc_tilt = None
 
 # initialize servo controllers
@@ -124,7 +124,7 @@ if __name__ == "__main__":
 	# start a manager for managing process-safe variables
 	with Manager() as manager:
 		# enable the servos
-		init_servos()
+		#init_servos()
 
 		# set integer values for the object center (x, y)-coordinates
 		centerX = manager.Value("i", 0)
