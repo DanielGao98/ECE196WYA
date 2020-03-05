@@ -103,7 +103,9 @@ def set_servos(pan, tlt):
 		print("pan value is " + str(pan.value))
 		print("tilt value is " + str(tlt.value))
 		#pan to rotation angle
-		sc_pan.rotate(pan.value)
+		
+		if sc_pan is not None:
+			sc_pan.rotate(pan.value)
 		#tilt to rotation angle
 	#	sc_tilt.rotate(tlt.value)
 
