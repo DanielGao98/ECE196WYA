@@ -7,36 +7,24 @@ from multiprocessing import Process
 from imutils.video import VideoStream
 from pyimagesearch.objcenter import ObjCenter
 from pyimagesearch.pid import PID
+import pantilthat as pth
 import argparse
 import signal
 import time
 import sys
 import cv2
 
-from servo_controller import servo_controller as sc
-
-sc_pan = None
-sc_tilt = None
-
-# initialize servo controllers
-def init_servos():
-	sc_pan = sc()
-	#sc_tilt = sc()
-
-	print("pan and tilt servos initialized")
+# define the range for the motors
+servoRange = (-90, 90)
 
 # function to handle keyboard interrupt
 def signal_handler(sig, frame):
 	# print a status message
-	print("Signal interrupt was detected")
+	print("[INFO] You pressed `ctrl + c`! Exiting...")
 
-	sc_pan.reset()
-	sc_pan.stop()
-
-	#sc_tilt.reset()
-	#sc_tilt.stop()
-
-	print("both servos have been terminated")
+	# disable the servos
+	pth.servo_enable(1, False)
+	pth.servo_enable(2, False)
 
 	# exit
 	sys.exit()
@@ -57,6 +45,7 @@ def obj_center(args, objX, objY, centerX, centerY):
 		# grab the frame from the threaded video stream and flip it
 		# vertically (since our camera was upside down)
 		frame = vs.read()
+		frame = cv2.flip(frame, 0)
 
 		# calculate the center of the frame as this is where we will
 		# try to keep the object
@@ -94,20 +83,27 @@ def pid_process(output, p, i, d, objCoord, centerCoord):
 		# update the value
 		output.value = p.update(error)
 
+def in_range(val, start, end):
+	# determine the input vale is in the supplied range
+	return (val >= start and val <= end)
+
 def set_servos(pan, tlt):
 	# signal trap to handle keyboard interrupt
 	signal.signal(signal.SIGINT, signal_handler)
 
 	# loop indefinitely
 	while True:
-		print("pan value is " + pan.value)
-		print("tilt value is " + tlt.value)
+		# the pan and tilt angles are reversed
+		panAngle = -1 * pan.value
+		tltAngle = -1 * tlt.value
 
-		#pan to rotation angle
-		sc_pan.rotate(pan.value)
+		# if the pan angle is within the range, pan
+		if in_range(panAngle, servoRange[0], servoRange[1]):
+			pth.pan(panAngle)
 
-		#tilt to rotation angle
-	#	sc_tilt.rotate(tlt.value)
+		# if the tilt angle is within the range, tilt
+		if in_range(tltAngle, servoRange[0], servoRange[1]):
+			pth.tilt(tltAngle)
 
 # check to see if this is the main body of execution
 if __name__ == "__main__":
@@ -117,13 +113,11 @@ if __name__ == "__main__":
 		help="path to input Haar cascade for face detection")
 	args = vars(ap.parse_args())
 
-	#print bc idk what args are
-	print(str(args))
-
 	# start a manager for managing process-safe variables
 	with Manager() as manager:
 		# enable the servos
-		init_servos()
+		pth.servo_enable(1, True)
+		pth.servo_enable(2, True)
 
 		# set integer values for the object center (x, y)-coordinates
 		centerX = manager.Value("i", 0)
@@ -157,19 +151,22 @@ if __name__ == "__main__":
 			args=(args, objX, objY, centerX, centerY))
 		processPanning = Process(target=pid_process,
 			args=(pan, panP, panI, panD, objX, centerX))
-	#	processTilting = Process(target=pid_process,
-	#		args=(tlt, tiltP, tiltI, tiltD, objY, centerY))
+		processTilting = Process(target=pid_process,
+			args=(tlt, tiltP, tiltI, tiltD, objY, centerY))
 		processSetServos = Process(target=set_servos, args=(pan, tlt))
 
-		# initalize the 4 processes
+		# start all 4 processes
 		processObjectCenter.start()
 		processPanning.start()
-	#	processTilting.start()
+		processTilting.start()
 		processSetServos.start()
 
-		# set the process to run until interrupt
+		# join all 4 processes
 		processObjectCenter.join()
 		processPanning.join()
-	#	processTilting.join()
+		processTilting.join()
 		processSetServos.join()
 
+		# disable the servos
+		pth.servo_enable(1, False)
+		pth.servo_enable(2, False)
