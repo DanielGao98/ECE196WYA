@@ -100,11 +100,10 @@ def set_servos(pan, tlt):
 
 	# loop indefinitely
 	while True:
-		print("pan value is " + pan.value)
-		print("tilt value is " + tlt.value)
+		print("pan value is " + str(pan.value))
+		print("tilt value is " + str(tlt.value))
 		#pan to rotation angle
 		sc_pan.rotate(pan.value)
-
 		#tilt to rotation angle
 	#	sc_tilt.rotate(tlt.value)
 
