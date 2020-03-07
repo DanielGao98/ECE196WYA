@@ -1,5 +1,5 @@
 # USAGE
-# python pan_tilt_tracking.py --cascade haarcascade_frontalface_default.xml
+# python3 pan_tilt_tracking.py --cascade haarcascade_frontalface_default.xml
 
 # import necessary packages
 from multiprocessing import Manager
