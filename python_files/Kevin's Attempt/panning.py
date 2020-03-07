@@ -97,7 +97,7 @@ def track_face(face_position):
 
 while True:
 	# capture frame by frame
-	ret, frame = video_capture.read()
+	frame = video_capture.read()
 	
 	# find the position of the face
 	face = faceCascade.detectMultiScale(
