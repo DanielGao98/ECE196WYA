@@ -19,10 +19,11 @@ class servo_controller:
         print("show()")
 
     def rotate(self, amount):
-        print("HELLO IM HERE")
+        
         if float(amount) < 0 or float(amount) > 180:
             print("invalid rotation angle")
         else:
+            print("HELLO IM HERE")
             duty = 2 + float(amount/18) #duty 2 to 12 range 
             self.servo.ChangeDutyCycle(duty)
             time.sleep(0.5)
