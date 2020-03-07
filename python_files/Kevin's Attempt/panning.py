@@ -2,13 +2,11 @@ import cv2
 import sys
 import time
 import RPi.GPIO as gpio
-import picamera
-import numpy as np
 
-#servo setup
+# servo setup
 gpio.setmode(gpio.BOARD)
-gpio.setup(11,gpio.OUT)
-servo = gpio.PWM(11,50)
+gpio.setup(11, gpio.OUT)
+servo = gpio.PWM(11, 50)
 servo.start(7.5)
 servo.ChangeDutyCycle(0)
 
@@ -17,20 +15,20 @@ currentPos = 7.5
 CFace = 0
 max_right_pos = False
 max_left_pos = True
-minPos = 3 # This is the most left position within non-breakage range for the servo
-maxPos = 11.5 # This is the most right position within non-breakage range for the servo
-rangeRight = 230 # This refers the the X range for the face detection
+minPos = 3  # This is the most left position within non-breakage range for the servo
+maxPos = 11.5  # This is the most right position within non-breakage range for the servo
+rangeRight = 230  # This refers the the X range for the face detection
 rangeLeft = 140  # Same as reangeRight.
 
 # If it's moving to fast and not stoping on a face mess with this variable The higher the number
 # the bigger the increment it will move.
-incrementServo = .15 
+incrementServo = .15
 
 # webcam face detection
 #cascPath = sys.argv[1]
 cascPath = 'haarcascade_frontalface_default.xml'
 faceCascade = cv2.CascadeClassifier(cascPath)
-#video_capture = cv2.VideoCapture(0)
+video_capture = cv2.VideoCapture(0)
 #camera = picamera.PiCamera()
 time.sleep(2)
 
@@ -44,102 +42,100 @@ time.sleep(2)
 # moves the servo to the right until it's in the max right position and then moves it to the
 # the max left position.
 def scan():
-	global currentPos
-	global max_right_pos
-	global max_left_pos
-	
-	if not max_right_pos: 
-		servo_right()
-		if currentPos >= maxPos:
-			max_right_pos = True
-			max_left_pos = False
-	if not max_left_pos:
-		servo_left()
-		if currentPos <= minPos:
-			max_right_pos = False
-			max_left_pos = True 
+    global currentPos
+    global max_right_pos
+    global max_left_pos
+
+    if not max_right_pos:
+        servo_right()
+        if currentPos >= maxPos:
+            max_right_pos = True
+            max_left_pos = False
+    if not max_left_pos:
+        servo_left()
+        if currentPos <= minPos:
+            max_right_pos = False
+            max_left_pos = True
 
 # Moves the servo to the left once. But if its already at its max left position (minPos)
 # then it won't move left anymore
+
+
 def servo_left():
-	global currentPos
-	# Checks to see if its already at the max left (minPos) posistion
-	if currentPos > minPos:
-		currentPos = currentPos - incrementServo
-		servo.ChangeDutyCycle(currentPos)
-	time.sleep(.02) # Sleep because it reduces jitter
-	servo.ChangeDutyCycle(0) # Stop sending a signal servo also to stop jitter
+    global currentPos
+    # Checks to see if its already at the max left (minPos) posistion
+    if currentPos > minPos:
+        currentPos = currentPos - incrementServo
+        servo.ChangeDutyCycle(currentPos)
+    time.sleep(.02)  # Sleep because it reduces jitter
+    servo.ChangeDutyCycle(0)  # Stop sending a signal servo also to stop jitter
 
 # Moves the servo to the left once. But if its already at its max right position (maxPos)
 # then it won't move right anymore
+
+
 def servo_right():
-	global currentPos
-	# Checks to see if its already at the max right (maxPos) posistion
-	if currentPos < maxPos:
-		currentPos = currentPos + incrementServo
-		servo.ChangeDutyCycle(currentPos)
-	time.sleep(.02) # Sleep because it reduces jitter
-	servo.ChangeDutyCycle(0) # Stop sending a signal servo also to stop jitter
+    global currentPos
+    # Checks to see if its already at the max right (maxPos) posistion
+    if currentPos < maxPos:
+        currentPos = currentPos + incrementServo
+        servo.ChangeDutyCycle(currentPos)
+    time.sleep(.02)  # Sleep because it reduces jitter
+    servo.ChangeDutyCycle(0)  # Stop sending a signal servo also to stop jitter
 
 # If the face is within the predetermined range don't do anything. If its outside of the range
 # Adjust the servo so that the face is back in the range again. This is misleading though
 # because the SERVO is turning left, however its left is our right and vice-verca.
+
+
 def track_face(face_position):
 
-	# turn the SERVO to the left (our right)
-	if face_position > rangeRight:
-		servo_left()
-	
-	# turn the SERVO to the right (our left)
-	if face_position < rangeLeft:
-		servo_right()
-	time.sleep(.01)
-	servo.ChangeDutyCycle(0)
+    # turn the SERVO to the left (our right)
+    if face_position > rangeRight:
+        servo_left()
+
+    # turn the SERVO to the right (our left)
+    if face_position < rangeLeft:
+        servo_right()
+    time.sleep(.01)
+    servo.ChangeDutyCycle(0)
+
 
 while True:
-	# capture frame by frame
-	#ret, frame = video_capture.read()
-	with picamera.PiCamera() as camera:
-		camera.resolution = (320, 240)
-		camera.framerate = 24
-		time.sleep(2)
-		frame = np.empty((240, 320, 3), dtype=np.uint8)
-		camera.capture(frame, 'rgb')
-	print(type(frame))
-	# find the position of the face
-	face = faceCascade.detectMultiScale(
-		frame,
-		scaleFactor = 1.3,
-		minNeighbors = 1,
-		minSize = (40,40),
-		flags = (cv2.CASCADE_DO_CANNY_PRUNING + cv2.CASCADE_FIND_BIGGEST_OBJECT + cv2.CASCADE_DO_ROUGH_SEARCH + cv2.CASCADE_SCALE_IMAGE))
+    # capture frame by frame
+    ret, frame = video_capture.read()
 
-	# draw the rectangle around and face find the center of the face (CFace)
-	for (x, y, w, h) in face:
-		cv2.rectangle(frame, (x, y), (x+w,y+h), (0,0,255))
-		CFace = (w/2+x)
-		
-	# display the resulting frame
-	cv2.imshow('Video', frame)
-	time.sleep(1)
-	if cv2.waitKey(1) & 0xFF == ord('q'):
-		break
-	
-	#if we found a face send the position to the servo
-	if CFace != 0:
-		track_face(CFace)
+    # find the position of the face
+    face = faceCascade.detectMultiScale(
+        frame,
+        scaleFactor=1.3,
+        minNeighbors=1,
+        minSize=(40, 40),
+        flags=(cv2.CASCADE_DO_CANNY_PRUNING + cv2.CASCADE_FIND_BIGGEST_OBJECT + cv2.CASCADE_DO_ROUGH_SEARCH + cv2.CASCADE_SCALE_IMAGE))
 
-	else:
-		pass
-		#scan()
-		#set the value back to zero for the next pass
-	CFace = 0 	
-		
-				
+    # draw the rectangle around and face find the center of the face (CFace)
+    for (x, y, w, h) in face:
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255))
+        CFace = (w/2+x)
+
+    # display the resulting frame
+    cv2.imshow('Video', frame)
+    time.sleep(1)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+    # if we found a face send the position to the servo
+    if CFace != 0:
+        track_face(CFace)
+
+    else:
+        pass
+        # scan()
+        # set the value back to zero for the next pass
+    CFace = 0
+
 
 # clean up
 gpio.cleanup()
 video_capture.release()
 cv2.destroyAllWindows()
-
-	
