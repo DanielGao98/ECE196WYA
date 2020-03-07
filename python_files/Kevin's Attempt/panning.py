@@ -27,7 +27,8 @@ incrementServo = .15
 
 # webcam face detection
 #cascPath = sys.argv[1]
-#faceCascade = cv2.CascadeClassifier(cascPath)
+cascPath = 'haarcascade_frontalface_default.xml'
+faceCascade = cv2.CascadeClassifier(cascPath)
 video_capture = VideoStream(usePiCamea = True).start()
 time.sleep(2)
 
