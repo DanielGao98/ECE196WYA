@@ -3,6 +3,7 @@ import sys
 import time
 import RPi.GPIO as gpio
 import picamera
+import numpy as np
 
 #servo setup
 gpio.setmode(gpio.BOARD)
