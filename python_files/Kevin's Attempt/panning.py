@@ -2,6 +2,7 @@ import cv2
 import sys
 import time
 import RPi.GPIO as gpio
+import picamera
 
 #servo setup
 gpio.setmode(gpio.BOARD)
@@ -28,7 +29,8 @@ incrementServo = .15
 #cascPath = sys.argv[1]
 cascPath = 'haarcascade_frontalface_default.xml'
 faceCascade = cv2.CascadeClassifier(cascPath)
-video_capture = cv2.VideoCapture(0)
+#video_capture = cv2.VideoCapture(0)
+#camera = picamera.PiCamera()
 time.sleep(2)
 
 
@@ -95,7 +97,13 @@ def track_face(face_position):
 
 while True:
 	# capture frame by frame
-	ret, frame = video_capture.read()
+	#ret, frame = video_capture.read()
+	with picamera.PiCamera() as camera:
+		camera.resolution = (320, 240)
+		camera.framerate = 24
+		time.sleep(2)
+		frame = np.empty((240, 320, 3), dtype=np.uint8)
+		camera.capture(frame, 'rgb')
 	print(type(frame))
 	# find the position of the face
 	face = faceCascade.detectMultiScale(
