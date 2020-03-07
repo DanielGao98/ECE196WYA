@@ -19,6 +19,7 @@ class servo_controller:
         print("show()")
 
     def rotate(self, amount):
+        print("HELLO IM HERE")
         if float(amount) < 0 or float(amount) > 180:
             print("invalid rotation angle")
         else:
