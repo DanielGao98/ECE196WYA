@@ -30,8 +30,8 @@ def signal_handler(sig, frame):
 	# print a status message
 	print("Signal interrupt was detected")
 
-	sc_pan.reset()
-	sc_pan.stop()
+	#sc_pan.reset()
+	#sc_pan.stop()
 
 	#sc_tilt.reset()
 	#sc_tilt.stop()
