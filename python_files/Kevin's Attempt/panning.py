@@ -121,7 +121,7 @@ while True:
 		
 	# display the resulting frame
 	cv2.imshow('Video', frame)
-	
+	time.sleep(1)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
 	
