@@ -2,7 +2,6 @@ import cv2
 import sys
 import time
 import RPi.GPIO as gpio
-from imutils.video import VideoStream
 
 #servo setup
 gpio.setmode(gpio.BOARD)
@@ -97,7 +96,7 @@ def track_face(face_position):
 while True:
 	# capture frame by frame
 	frame = video_capture.read()
-	
+	print(type(frame))
 	# find the position of the face
 	face = faceCascade.detectMultiScale(
 		frame,
