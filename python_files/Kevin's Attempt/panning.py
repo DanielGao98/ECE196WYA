@@ -98,7 +98,7 @@ while True:
 	frame = video_capture.read()
 	print(type(frame))
 	# find the position of the face
-	face = faceCascade.detectMultiScale(
+	ret, face = faceCascade.detectMultiScale(
 		frame,
 		scaleFactor = 1.3,
 		minNeighbors = 1,
