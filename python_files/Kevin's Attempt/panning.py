@@ -97,6 +97,7 @@ def track_face(face_position):
     # turn the SERVO to the right (our left)
     if face_position < rangeLeft:
         servo_right()
+
     time.sleep(.01)
     servo.ChangeDutyCycle(0)
 
@@ -124,6 +125,8 @@ while True:
     time.sleep(1)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+    print(CFace)
 
     # if we found a face send the position to the servo
     if CFace != 0:
