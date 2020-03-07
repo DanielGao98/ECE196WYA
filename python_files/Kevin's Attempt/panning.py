@@ -29,11 +29,10 @@ incrementServo = .15
 #cascPath = sys.argv[1]
 cascPath = 'haarcascade_frontalface_default.xml'
 faceCascade = cv2.CascadeClassifier(cascPath)
-video_capture = VideoStream(usePiCamea = True).start()
+video_capture = cv2.VideoCapture(0)
 time.sleep(2)
 
 
-#video_capture = cv2.VideoCapture(0)
 #video_capture.set(3, 320)
 #video_capture.set(4, 240)
 
