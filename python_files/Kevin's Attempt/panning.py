@@ -103,7 +103,7 @@ def track_face(face_position):
 
 while True:
     # capture frame by frame
-	time.sleep(0.5)
+    time.sleep(0.5)
     ret, frame = video_capture.read()
 
     # find the position of the face
