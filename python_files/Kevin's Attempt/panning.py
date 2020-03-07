@@ -2,6 +2,7 @@ import cv2
 import sys
 import time
 import RPi.GPIO as gpio
+from imutils.video import VideoStream
 
 #servo setup
 gpio.setmode(gpio.BOARD)
@@ -25,12 +26,15 @@ rangeLeft = 140  # Same as reangeRight.
 incrementServo = .15 
 
 # webcam face detection
-cascPath = sys.argv[1]
-faceCascade = cv2.CascadeClassifier(cascPath)
+#cascPath = sys.argv[1]
+#faceCascade = cv2.CascadeClassifier(cascPath)
+video_capture = VideoStream(usePiCamea = True).start()
+time.sleep(2)
 
-video_capture = cv2.VideoCapture(0)
-video_capture.set(3, 320)
-video_capture.set(4, 240)
+
+#video_capture = cv2.VideoCapture(0)
+#video_capture.set(3, 320)
+#video_capture.set(4, 240)
 
 # Functions
 
