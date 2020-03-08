@@ -3,7 +3,7 @@ import sys
 import time
 import RPi.GPIO as gpio
 from simple_pid import PID
-pid = PID(0.001,0.1,0.001, setpoint = 0)
+pid = PID(0.001,0.01,0.001, setpoint = 0)
 # pan_servo setup
 gpio.setmode(gpio.BOARD)
 gpio.setup(11, gpio.OUT)
