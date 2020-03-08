@@ -3,26 +3,27 @@ import sys
 import time
 import RPi.GPIO as gpio
 
-# servo setup
+# pan_servo setup
 gpio.setmode(gpio.BOARD)
 gpio.setup(11, gpio.OUT)
-servo = gpio.PWM(11, 50)
-servo.start(7.5)
-servo.ChangeDutyCycle(0)
+pan_servo = gpio.PWM(11, 50)
+pan_servo.start(7.5)
+pan_servo.ChangeDutyCycle(0)
+
 
 #arrays and such
 currentPos = 7.5
 CFace = 0
 max_right_pos = False
 max_left_pos = True
-minPos = 3  # This is the most left position within non-breakage range for the servo
-maxPos = 11.5  # This is the most right position within non-breakage range for the servo
+minPos = 3  # This is the most left position within non-breakage range for the pan_servo
+maxPos = 11.5  # This is the most right position within non-breakage range for the pan_servo
 rangeRight = 230  # This refers the the X range for the face detection
 rangeLeft = 140  # Same as reangeRight.
 
 # If it's moving to fast and not stoping on a face mess with this variable The higher the number
 # the bigger the increment it will move.
-incrementServo = .15
+incrementpan_Servo = .15
 
 # webcam face detection
 #cascPath = sys.argv[1]
@@ -38,8 +39,8 @@ time.sleep(2)
 
 # Functions
 
-# Checks if the servo is in the max position to the left or right. If its not then it just
-# moves the servo to the right until it's in the max right position and then moves it to the
+# Checks if the pan_servo is in the max position to the left or right. If its not then it just
+# moves the pan_servo to the right until it's in the max right position and then moves it to the
 # the max left position.
 def scan():
     global currentPos
@@ -47,59 +48,59 @@ def scan():
     global max_left_pos
 
     if not max_right_pos:
-        servo_right()
+        pan_servo_right()
         if currentPos >= maxPos:
             max_right_pos = True
             max_left_pos = False
     if not max_left_pos:
-        servo_left()
+        pan_servo_left()
         if currentPos <= minPos:
             max_right_pos = False
             max_left_pos = True
 
-# Moves the servo to the left once. But if its already at its max left position (minPos)
+# Moves the pan_servo to the left once. But if its already at its max left position (minPos)
 # then it won't move left anymore
 
 
-def servo_left():
+def pan_servo_left():
     global currentPos
     # Checks to see if its already at the max left (minPos) posistion
     if currentPos > minPos:
-        currentPos = currentPos - incrementServo
-        servo.ChangeDutyCycle(currentPos)
+        currentPos = currentPos - incrementpan_Servo
+        pan_servo.ChangeDutyCycle(currentPos)
     time.sleep(.02)  # Sleep because it reduces jitter
-    servo.ChangeDutyCycle(0)  # Stop sending a signal servo also to stop jitter
+    pan_servo.ChangeDutyCycle(0)  # Stop sending a signal pan_servo also to stop jitter
 
-# Moves the servo to the left once. But if its already at its max right position (maxPos)
+# Moves the pan_servo to the left once. But if its already at its max right position (maxPos)
 # then it won't move right anymore
 
 
-def servo_right():
+def pan_servo_right():
     global currentPos
     # Checks to see if its already at the max right (maxPos) posistion
     if currentPos < maxPos:
-        currentPos = currentPos + incrementServo
-        servo.ChangeDutyCycle(currentPos)
+        currentPos = currentPos + incrementpan_Servo
+        pan_servo.ChangeDutyCycle(currentPos)
     time.sleep(.02)  # Sleep because it reduces jitter
-    servo.ChangeDutyCycle(0)  # Stop sending a signal servo also to stop jitter
+    pan_servo.ChangeDutyCycle(0)  # Stop sending a signal pan_servo also to stop jitter
 
 # If the face is within the predetermined range don't do anything. If its outside of the range
-# Adjust the servo so that the face is back in the range again. This is misleading though
-# because the SERVO is turning left, however its left is our right and vice-verca.
+# Adjust the pan_servo so that the face is back in the range again. This is misleading though
+# because the pan_SERVO is turning left, however its left is our right and vice-verca.
 
 
 def track_face(face_position):
 
-    # turn the SERVO to the left (our right)
+    # turn the pan_SERVO to the left (our right)
     if face_position > 100:
-        servo_left()
+        pan_servo_left()
 
-    # turn the SERVO to the right (our left)
+    # turn the pan_SERVO to the right (our left)
     if face_position < -100:
-        servo_right()
+        pan_servo_right()
 
     time.sleep(.01)
-    servo.ChangeDutyCycle(0)
+    pan_servo.ChangeDutyCycle(0)
 
 
 while True:
@@ -126,7 +127,7 @@ while True:
 
     print(CFace)
 
-    # if we found a face send the position to the servo
+    # if we found a face send the position to the pan_servo
     if CFace != 0:
         track_face(CFace)
 
