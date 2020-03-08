@@ -40,17 +40,18 @@ time.sleep(2)
 # Moves the pan_servo to the left once. But if its already at its max left position (minPos)
 # then it won't move left anymore
 
-def pid_track_face(X_position, Y_position):
+def pid_track_face(X_position):
     global currentPosX
-    global currentPosY
     if not (-50 < X_position < 50):
         X_diff = -(X_position)*0.00025
         print(f'X_diff = {X_diff}')
         if minPos < (currentPosX+X_diff) < maxPos:
             currentPosX = currentPosX + X_diff
         pan_servo.ChangeDutyCycle(currentPosX)
-        time.sleep(.05)
+        time.sleep(.01)
         pan_servo.ChangeDutyCycle(0)
+def pid_track_face_Y(Y_position):
+    global currentPosY
     if not (-30 < Y_position < 30):
         Y_diff = -(Y_position)*0.00015
         print(f'Y_diff = {Y_diff}')
@@ -58,7 +59,7 @@ def pid_track_face(X_position, Y_position):
             currentPosY = currentPosY + Y_diff
             print(f'currentY = {currentPosY}')
         tilt_servo.ChangeDutyCycle(currentPosY)
-        time.sleep(.05)
+        time.sleep(.01)
         tilt_servo.ChangeDutyCycle(0)
 
 while True:
@@ -86,8 +87,10 @@ while True:
 
 
     # if we found a face send the position to the pan_servo
-    if CFaceX != 0 or CFaceY != 0:
-        pid_track_face(CFaceX, CFaceY)
+    if CFaceX != 0:
+        pid_track_face_X(CFaceX)
+    if CFaceY != 0:
+        pid_track_face_Y(CFaceY)
         print(CFaceX, CFaceY)
     CFaceX = 0
     CFaceY = 0
