@@ -91,11 +91,11 @@ def servo_right():
 def track_face(face_position):
 
     # turn the SERVO to the left (our right)
-    if face_position > 0:
+    if face_position > 100:
         servo_left()
 
     # turn the SERVO to the right (our left)
-    if face_position < 0:
+    if face_position < -100:
         servo_right()
 
     time.sleep(.01)
