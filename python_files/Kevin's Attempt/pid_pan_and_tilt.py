@@ -48,8 +48,9 @@ def pid_track_face_X(X_position):
         if minPos < (currentPosX+X_diff) < maxPos:
             currentPosX = currentPosX + X_diff
         pan_servo.ChangeDutyCycle(currentPosX)
-        time.sleep(.01)
+        time.sleep(0.01)
         pan_servo.ChangeDutyCycle(0)
+        time.sleep(0.01)
 def pid_track_face_Y(Y_position):
     global currentPosY
     if not (-30 < Y_position < 30):
@@ -59,8 +60,9 @@ def pid_track_face_Y(Y_position):
             currentPosY = currentPosY + Y_diff
             print(f'currentY = {currentPosY}')
         tilt_servo.ChangeDutyCycle(currentPosY)
-        time.sleep(.01)
+        time.sleep(0.01)
         tilt_servo.ChangeDutyCycle(0)
+        time.sleep(0.01)
 
 while True:
     # capture frame by frame
