@@ -40,7 +40,7 @@ time.sleep(2)
 # Moves the pan_servo to the left once. But if its already at its max left position (minPos)
 # then it won't move left anymore
 
-def pid_track_face(X_position):
+def pid_track_face_X(X_position):
     global currentPosX
     if not (-50 < X_position < 50):
         X_diff = -(X_position)*0.00025
