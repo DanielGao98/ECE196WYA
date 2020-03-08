@@ -51,7 +51,7 @@ def pid_track_face(X_position, Y_position):
         pan_servo.ChangeDutyCycle(currentPosX)
         time.sleep(.01)
         pan_servo.ChangeDutyCycle(0)
-    if not (-50 < Y_position < 50):
+    if not (-30 < Y_position < 30):
         Y_diff = -(Y_position)*0.00015
         print(f'Y_diff = {Y_diff}')
         if minPos < (currentPosY+Y_diff) < maxPos:
