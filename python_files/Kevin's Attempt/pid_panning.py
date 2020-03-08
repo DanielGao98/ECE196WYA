@@ -125,6 +125,7 @@ def pid_track_face(face_position):
     global currentPos
     if not (-100 < face_position < 100):
         diff = pid(face_position)
+        print(f'diff = {diff}')
         currentPos = currentPos + diff
         pan_servo.ChangeDutyCycle(currentPos)
         time.sleep(.01)
