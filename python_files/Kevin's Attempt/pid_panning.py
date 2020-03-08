@@ -3,7 +3,7 @@ import sys
 import time
 import RPi.GPIO as gpio
 from simple_pid import PID
-pid = PID(1,0.1,0.05, setpoint = 0)
+pid = PID(0.001,0.1,0.001, setpoint = 0)
 # pan_servo setup
 gpio.setmode(gpio.BOARD)
 gpio.setup(11, gpio.OUT)
@@ -124,7 +124,7 @@ def track_face(face_position):
 def pid_track_face(face_position):
     global currentPos
     if not (-100 < face_position < 100):
-        diff = pid(face_position*0.01)
+        diff = pid(face_position)
         print(f'diff = {diff}')
         currentPos = currentPos + diff
         pan_servo.ChangeDutyCycle(currentPos)
