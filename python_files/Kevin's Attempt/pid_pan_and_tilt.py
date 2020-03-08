@@ -16,6 +16,8 @@ tilt_servo.start(7.5)
 tilt_servo.ChangeDutyCycle(0)
 
 #arrays and such
+minPos = 3  # This is the most left position within non-breakage range for the pan_servo
+maxPos = 11.5  # This is the most right position within non-breakage range for the pan_servo
 currentPosX = 7.5
 currentPosY = 7.5
 CFaceX = 0
@@ -44,14 +46,16 @@ def pid_track_face(X_position, Y_position):
     if not (-50 < X_position < 50):
         X_diff = -(X_position)*0.00025
         print(f'X_diff = {X_diff}')
-        currentPosX = currentPosX + X_diff
+        if minPos < (currentPosX+X_diff) < maxPos:
+            currentPosX = currentPosX + X_diff
         pan_servo.ChangeDutyCycle(currentPosX)
         time.sleep(.01)
         pan_servo.ChangeDutyCycle(0)
     if not (-50 < Y_position < 50):
         Y_diff = -(Y_position)*0.00015
         print(f'Y_diff = {Y_diff}')
-        currentPosY = currentPosY + Y_diff
+        if minPos < (currentPosY+Y_diff) < maxPos:
+            currentPosY = currentPosY + Y_diff
         tilt_servo.ChangeDutyCycle(currentPosY)
         time.sleep(.01)
         tilt_servo.ChangeDutyCycle(0)
