@@ -12,11 +12,13 @@ gpio.setup(11, gpio.OUT)
 pan_servo = gpio.PWM(11, 50)
 pan_servo.start(7.5)
 pan_servo.ChangeDutyCycle(0)
+time.sleep(0.01)
 
 gpio.setup(7, gpio.OUT)
 tilt_servo = gpio.PWM(7, 50)
 tilt_servo.start(7.5)
 tilt_servo.ChangeDutyCycle(0)
+time.sleep(0.01)
 
 #arrays and such
 minPos = 3  # This is the most left position within non-breakage range for the pan_servo
@@ -52,8 +54,8 @@ def pid_track_face_X(X_position):
             currentPosX = currentPosX + X_diff
         pan_servo.ChangeDutyCycle(currentPosX)
         time.sleep(0.01)
-        pan_servo.ChangeDutyCycle(0)
-        time.sleep(0.01)
+        #pan_servo.ChangeDutyCycle(0)
+        #time.sleep(0.01)
 def pid_track_face_Y(Y_position):
     global currentPosY
     if not (-30 < Y_position < 30):
@@ -64,10 +66,14 @@ def pid_track_face_Y(Y_position):
             print(f'currentY = {currentPosY}')
         tilt_servo.ChangeDutyCycle(currentPosY)
         time.sleep(0.01)
-        tilt_servo.ChangeDutyCycle(0)
-        time.sleep(0.01)
+        #tilt_servo.ChangeDutyCycle(0)
+        #time.sleep(0.01)
 
 while True:
+    pan_servo.ChangeDutyCycle(0)
+    time.sleep(0.01)
+    tilt_servo.ChangeDutyCycle(0)
+    time.sleep(0.01)
     # capture frame by frame
     ret, frame = video_capture.read()
 
