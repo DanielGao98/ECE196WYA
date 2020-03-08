@@ -3,6 +3,9 @@ import sys
 import time
 import RPi.GPIO as gpio
 from simple_pid import PID
+
+display = True
+
 # pan_servo setup
 gpio.setmode(gpio.BOARD)
 gpio.setup(11, gpio.OUT)
@@ -78,12 +81,14 @@ while True:
 
     # draw the rectangle around and face find the center of the face (CFace)
     for (x, y, w, h) in face:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255))
+        if display:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0))
         CFaceX = (w/2+x) - 640/2
         CFaceY = (h/2+y) - 480/2
 
     # display the resulting frame
-    cv2.imshow('Video', frame)
+    if display:
+        cv2.imshow('Video', frame)
     if cv2.waitKey(1) == 27:
         break
 
