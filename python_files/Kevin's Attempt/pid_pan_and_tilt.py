@@ -18,8 +18,8 @@ tilt_servo.ChangeDutyCycle(0)
 #arrays and such
 currentPosX = 7.5
 currentPosY = 7.5
-CfaceX = 0
-CfaceY = 0
+CFaceX = 0
+CFaceY = 0
 
 # webcam face detection
 #cascPath = sys.argv[1]
@@ -48,7 +48,7 @@ def pid_track_face(X_position, Y_position):
         pan_servo.ChangeDutyCycle(currentPosX)
         time.sleep(.01)
         pan_servo.ChangeDutyCycle(0)
-    if not (-50 < X_position < 50):
+    if not (-50 < Y_position < 50):
         Y_diff = -(Y_position)*0.00025
         print(f'X_diff = {Y_diff}')
         currentPosY = currentPosY + Y_diff
@@ -84,7 +84,8 @@ while True:
     if CFaceX != 0 or CFaceY != 0:
         pid_track_face(CFaceX, CFaceY)
         print(CFaceX, CFaceY)
-    CFace = 0
+    CFaceX = 0
+    CFaceY = 0
 
 
 # clean up
