@@ -13,7 +13,7 @@ pan_servo.ChangeDutyCycle(0)
 
 # tilt servo setup
 gpio.setup(7, gpio.OUT)
-tilt_servo = gpio.PMW(7, 50)
+tilt_servo = gpio.PWM(7, 50)
 tilt_servo.start(7.5)
 tilt_servo.ChangeDutyCycle(0)
 
