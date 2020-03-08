@@ -49,7 +49,7 @@ def pid_track_face(X_position, Y_position):
         time.sleep(.01)
         pan_servo.ChangeDutyCycle(0)
     if not (-50 < Y_position < 50):
-        Y_diff = -(Y_position)*0.00025
+        Y_diff = -(Y_position)*0.00015
         print(f'Y_diff = {Y_diff}')
         currentPosY = currentPosY + Y_diff
         tilt_servo.ChangeDutyCycle(currentPosY)
