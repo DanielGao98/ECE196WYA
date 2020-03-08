@@ -5,12 +5,12 @@ import RPi.GPIO as gpio
 from simple_pid import PID
 # pan_servo setup
 gpio.setmode(gpio.BOARD)
-gpio.setup(11, gpio.OUT)
+gpio.setup(7, gpio.OUT)
 pan_servo = gpio.PWM(7, 50)
 pan_servo.start(7.5)
 pan_servo.ChangeDutyCycle(0)
 
-gpio.setup(7, gpio.OUT)
+gpio.setup(11, gpio.OUT)
 tilt_servo = gpio.PWM(11, 50)
 tilt_servo.start(7.5)
 tilt_servo.ChangeDutyCycle(0)
