@@ -18,7 +18,8 @@ tilt_servo.ChangeDutyCycle(0)
 #arrays and such
 currentPosX = 7.5
 currentPosY = 7.5
-
+CfaceX = 0
+CfaceY = 0
 
 # webcam face detection
 #cascPath = sys.argv[1]
