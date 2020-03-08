@@ -48,7 +48,9 @@ time.sleep(2)
 def pan_servo_left():
     global currentPosX
     # Checks to see if its already at the max left (minPos) posistion
+    print('go left')
     if currentPosX > minPos:
+        print("GOING LEFT")
         currentPosX = currentPosX - incrementpan_Servo
         pan_servo.ChangeDutyCycle(currentPosX)
     time.sleep(.02)  # Sleep because it reduces jitter
@@ -61,8 +63,10 @@ def pan_servo_left():
 
 def pan_servo_right():
     global currentPosX
+    print('go right')
     # Checks to see if its already at the max right (maxPos) posistion
     if currentPosX < maxPos:
+        print('GOING RIGHT')
         currentPosX = currentPosX + incrementpan_Servo
         pan_servo.ChangeDutyCycle(currentPosX)
     time.sleep(.02)  # Sleep because it reduces jitter
