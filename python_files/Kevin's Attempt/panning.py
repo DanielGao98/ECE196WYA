@@ -104,7 +104,6 @@ def track_face(face_position):
 
 while True:
     # capture frame by frame
-    time.sleep(0.5)
     ret, frame = video_capture.read()
 
     # find the position of the face
@@ -122,7 +121,6 @@ while True:
 
     # display the resulting frame
     cv2.imshow('Video', frame)
-    time.sleep(1)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
