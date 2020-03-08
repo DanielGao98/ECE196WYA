@@ -123,12 +123,12 @@ def track_face(face_position):
 
 def pid_track_face(face_position):
     global currentPos
-	if not (-100 < face_position < 100):
-		diff = pid(face_position)
-		currentPos = currentPos + diff
-		pan_servo.ChangeDutyCycle(currentPos)
-		time.sleep(.01)
-		pan_servo.ChangeDutyCycle(0)
+    if not (-100 < face_position < 100):
+        diff = pid(face_position)
+        currentPos = currentPos + diff
+        pan_servo.ChangeDutyCycle(currentPos)
+        time.sleep(.01)
+        pan_servo.ChangeDutyCycle(0)
 
 while True:
     # capture frame by frame
