@@ -82,7 +82,7 @@ while True:
 
     # if we found a face send the position to the pan_servo
     if CFaceX != 0 or CFaceY != 0:
-        pid_track_face(CFace, CFaceY)
+        pid_track_face(CFaceX, CFaceY)
         print(CFaceX, CFaceY)
     CFace = 0
 
