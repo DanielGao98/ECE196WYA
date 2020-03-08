@@ -91,11 +91,11 @@ def servo_right():
 def track_face(face_position):
 
     # turn the SERVO to the left (our right)
-    if face_position > rangeRight:
+    if face_position > 0:
         servo_left()
 
     # turn the SERVO to the right (our left)
-    if face_position < rangeLeft:
+    if face_position < 0:
         servo_right()
 
     time.sleep(.01)
@@ -118,7 +118,7 @@ while True:
     # draw the rectangle around and face find the center of the face (CFace)
     for (x, y, w, h) in face:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255))
-        CFace = (w/2+x)
+        CFace = (w/2+x) - 640/2
 
     # display the resulting frame
     cv2.imshow('Video', frame)
