@@ -19,7 +19,8 @@ tilt_servo.ChangeDutyCycle(0)
 
 
 #arrays and such
-currentPos = 7.5
+currentPosX = 7.5
+currentPosY = 7.5
 CFace = 0
 max_right_pos = False
 max_left_pos = True
@@ -45,11 +46,11 @@ time.sleep(2)
 
 
 def pan_servo_left():
-    global currentPos
+    global currentPosX
     # Checks to see if its already at the max left (minPos) posistion
-    if currentPos > minPos:
-        currentPos = currentPos - incrementpan_Servo
-        pan_servo.ChangeDutyCycle(currentPos)
+    if currentPosX > minPos:
+        currentPosX = currentPosX - incrementpan_Servo
+        pan_servo.ChangeDutyCycle(currentPosX)
     time.sleep(.02)  # Sleep because it reduces jitter
     # Stop sending a signal pan_servo also to stop jitter
     pan_servo.ChangeDutyCycle(0)
@@ -59,39 +60,39 @@ def pan_servo_left():
 
 
 def pan_servo_right():
-    global currentPos
+    global currentPosX
     # Checks to see if its already at the max right (maxPos) posistion
-    if currentPos < maxPos:
-        currentPos = currentPos + incrementpan_Servo
-        pan_servo.ChangeDutyCycle(currentPos)
+    if currentPosX < maxPos:
+        currentPosX = currentPosX + incrementpan_Servo
+        pan_servo.ChangeDutyCycle(currentPosX)
     time.sleep(.02)  # Sleep because it reduces jitter
     # Stop sending a signal pan_servo also to stop jitter
     pan_servo.ChangeDutyCycle(0)
 
 
 def tilt_servo_up():
-    global currentPos
+    global currentPosY
     # Checks to see if its already at the max left (minPos) posistion
-    if currentPos > minPos:
-        currentPos = currentPos - incrementpan_Servo
-        pan_servo.ChangeDutyCycle(currentPos)
+    if currentPosY > minPos:
+        currentPosY = currentPosY - incrementpan_Servo
+        tilt_servo.ChangeDutyCycle(currentPosY)
     time.sleep(.02)  # Sleep because it reduces jitter
     # Stop sending a signal pan_servo also to stop jitter
-    pan_servo.ChangeDutyCycle(0)
+    tilt_servo.ChangeDutyCycle(0)
 
 # Moves the pan_servo to the left once. But if its already at its max right position (maxPos)
 # then it won't move right anymore
 
 
 def tilt_servo_down():
-    global currentPos
+    global currentPosY
     # Checks to see if its already at the max right (maxPos) posistion
-    if currentPos < maxPos:
-        currentPos = currentPos + incrementpan_Servo
-        pan_servo.ChangeDutyCycle(currentPos)
+    if currentPosY < maxPos:
+        currentPosY = currentPosY + incrementpan_Servo
+        tilt_servo.ChangeDutyCycle(currentPosY)
     time.sleep(.02)  # Sleep because it reduces jitter
     # Stop sending a signal pan_servo also to stop jitter
-    pan_servo.ChangeDutyCycle(0)
+    tilt_servo.ChangeDutyCycle(0)
 
 
 # If the face is within the predetermined range don't do anything. If its outside of the range
