@@ -3,7 +3,7 @@ import sys
 import time
 import RPi.GPIO as gpio
 from simple_pid import PID
-pid = PID(0.00001,0.00001,0.00001, setpoint = 0)
+pid = PID(0.00001,0.0001,0.00001, setpoint = 0)
 # pan_servo setup
 gpio.setmode(gpio.BOARD)
 gpio.setup(11, gpio.OUT)
@@ -105,7 +105,7 @@ def track_face(face_position):
 def pid_track_face(face_position):
     global currentPos
     if not (-50 < face_position < 50):
-        diff = pid(face_position)
+        diff = -(face_position)*0.00025
         print(f'diff = {diff}')
         currentPos = currentPos + diff
         pan_servo.ChangeDutyCycle(currentPos)
@@ -131,7 +131,7 @@ while True:
 
     # display the resulting frame
     cv2.imshow('Video', frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) == 27:
         break
 
     print(CFace)

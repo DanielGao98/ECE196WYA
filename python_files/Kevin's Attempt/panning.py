@@ -24,7 +24,7 @@ rangeLeft = 140  # Same as reangeRight.
 
 # If it's moving to fast and not stoping on a face mess with this variable The higher the number
 # the bigger the increment it will move.
-incrementpan_Servo = .15
+incrementpan_Servo = .05
 
 # webcam face detection
 #cascPath = sys.argv[1]
@@ -111,11 +111,11 @@ def pid_pan_servo_right():
 def track_face(face_position):
 
     # turn the pan_SERVO to the left (our right)
-    if face_position > 100:
+    if face_position > 75:
         pan_servo_left()
 
     # turn the pan_SERVO to the right (our left)
-    if face_position < -100:
+    if face_position < -75:
         pan_servo_right()
 
     time.sleep(.01)
@@ -140,7 +140,7 @@ while True:
 
     # display the resulting frame
     cv2.imshow('Video', frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) == 27:
         break
 
     print(CFace)
