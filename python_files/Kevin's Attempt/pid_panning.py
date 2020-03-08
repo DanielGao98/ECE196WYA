@@ -3,7 +3,7 @@ import sys
 import time
 import RPi.GPIO as gpio
 from simple_pid import PID
-pid = PID(0.001,0.01,0.001, setpoint = 0)
+pid = PID(0.001,0.001,0.001, setpoint = 0)
 # pan_servo setup
 gpio.setmode(gpio.BOARD)
 gpio.setup(11, gpio.OUT)
@@ -39,25 +39,6 @@ time.sleep(2)
 #video_capture.set(4, 240)
 
 # Functions
-
-# Checks if the pan_servo is in the max position to the left or right. If its not then it just
-# moves the pan_servo to the right until it's in the max right position and then moves it to the
-# the max left position.
-def scan():
-    global currentPos
-    global max_right_pos
-    global max_left_pos
-
-    if not max_right_pos:
-        pan_servo_right()
-        if currentPos >= maxPos:
-            max_right_pos = True
-            max_left_pos = False
-    if not max_left_pos:
-        pan_servo_left()
-        if currentPos <= minPos:
-            max_right_pos = False
-            max_left_pos = True
 
 # Moves the pan_servo to the left once. But if its already at its max left position (minPos)
 # then it won't move left anymore
@@ -123,7 +104,7 @@ def track_face(face_position):
 
 def pid_track_face(face_position):
     global currentPos
-    if not (-100 < face_position < 100):
+    if not (-50 < face_position < 50):
         diff = pid(face_position)
         print(f'diff = {diff}')
         currentPos = currentPos + diff
