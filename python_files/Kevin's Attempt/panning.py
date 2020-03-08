@@ -121,15 +121,6 @@ def track_face(face_position):
     time.sleep(.01)
     pan_servo.ChangeDutyCycle(0)
 
-def pid_track_face(face_position):
-    global currentPos
-	if not (-100 < face_position < 100):
-		diff = pid(face_position)
-		currentPos = currentPos + diff
-		pan_servo.ChangeDutyCycle(currentPos)
-		time.sleep(.01)
-		pan_servo.ChangeDutyCycle(0)
-
 while True:
     # capture frame by frame
     ret, frame = video_capture.read()
@@ -156,8 +147,8 @@ while True:
 
     # if we found a face send the position to the pan_servo
     if CFace != 0:
-        #track_face(CFace)
-        pid_track_face(CFace)
+        track_face(CFace)
+        #pid_track_face(CFace)
     else:
         pass
         # scan()
