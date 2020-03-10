@@ -4,7 +4,7 @@ import time
 import RPi.GPIO as gpio
 from simple_pid import PID
 
-display = True
+display = False
 
 currentPosX = 8.5
 currentPosY = 9.5
@@ -35,7 +35,7 @@ CFaceY = 0
 
 # webcam face detection
 #cascPath = sys.argv[1]
-cascPath = 'haarcascade_frontalface_default.xml'
+cascPath = '/home/wya/Desktop/ECE196WYA/python_files/Kevin_Attempt/haarcascade_frontalface_default.xml'
 faceCascade = cv2.CascadeClassifier(cascPath)
 video_capture = cv2.VideoCapture(0)
 #camera = picamera.PiCamera()
@@ -96,8 +96,10 @@ while True:
     except:
         pass
     # display the resulting frame
+    
     if display:    
         cv2.imshow('Video', cv2.flip(frame, 1))
+    
     if cv2.waitKey(1) == 27:
         break
 
