@@ -3,23 +3,33 @@ import sys
 import time
 import RPi.GPIO as gpio
 from simple_pid import PID
+
+display = True
+
+currentPosX = 8.5
+currentPosY = 9.5
+
 # pan_servo setup
 gpio.setmode(gpio.BOARD)
 gpio.setup(11, gpio.OUT)
 pan_servo = gpio.PWM(11, 50)
-pan_servo.start(7.5)
+pan_servo.start(currentPosX)
+time.sleep(0.1)
 pan_servo.ChangeDutyCycle(0)
+time.sleep(0.1)
 
 gpio.setup(7, gpio.OUT)
 tilt_servo = gpio.PWM(7, 50)
-tilt_servo.start(7.5)
+tilt_servo.start(currentPosY)
+time.sleep(0.1)
 tilt_servo.ChangeDutyCycle(0)
+time.sleep(0.1)
 
 #arrays and such
 minPos = 3  # This is the most left position within non-breakage range for the pan_servo
 maxPos = 11.5  # This is the most right position within non-breakage range for the pan_servo
-currentPosX = 7.5
-currentPosY = 7.5
+#currentPosX = 7.5
+#currentPosY = 7.5
 CFaceX = 0
 CFaceY = 0
 
@@ -43,25 +53,28 @@ time.sleep(2)
 def pid_track_face_X(X_position):
     global currentPosX
     if not (-50 < X_position < 50):
-        X_diff = -(X_position)*0.00025
-        print(f'X_diff = {X_diff}')
+        X_diff = -(X_position)*0.00045
+        #print(f'X_diff = {X_diff}')
         if minPos < (currentPosX+X_diff) < maxPos:
+            print(f"X = {currentPosX} ")
             currentPosX = currentPosX + X_diff
         pan_servo.ChangeDutyCycle(currentPosX)
-        time.sleep(.01)
+        time.sleep(0.01)
         pan_servo.ChangeDutyCycle(0)
+        time.sleep(0.02)
 def pid_track_face_Y(Y_position):
     global currentPosY
     if not (-30 < Y_position < 30):
-        Y_diff = -(Y_position)*0.00015
-        print(f'Y_diff = {Y_diff}')
+        Y_diff = -(Y_position)*0.0004
+        #print(f'Y_diff = {Y_diff}')
         if minPos < (currentPosY+Y_diff) < maxPos:
+            print(f"Y = {currentPosY}")
             currentPosY = currentPosY + Y_diff
-            print(f'currentY = {currentPosY}')
+            #print(f'currentY = {currentPosY}')
         tilt_servo.ChangeDutyCycle(currentPosY)
-        time.sleep(.01)
+        time.sleep(0.01)
         tilt_servo.ChangeDutyCycle(0)
-
+        time.sleep(0.02)
 while True:
     # capture frame by frame
     ret, frame = video_capture.read()
@@ -73,15 +86,18 @@ while True:
         minNeighbors=1,
         minSize=(40, 40),
         flags=(cv2.CASCADE_DO_CANNY_PRUNING + cv2.CASCADE_FIND_BIGGEST_OBJECT + cv2.CASCADE_DO_ROUGH_SEARCH + cv2.CASCADE_SCALE_IMAGE))
-
     # draw the rectangle around and face find the center of the face (CFace)
-    for (x, y, w, h) in face:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255))
+    try:
+        (x, y, w, h) =face[0]
+        if display:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), thickness = 5)
         CFaceX = (w/2+x) - 640/2
         CFaceY = (h/2+y) - 480/2
-
+    except:
+        pass
     # display the resulting frame
-    cv2.imshow('Video', frame)
+    if display:    
+        cv2.imshow('Video', cv2.flip(frame, 1))
     if cv2.waitKey(1) == 27:
         break
 
