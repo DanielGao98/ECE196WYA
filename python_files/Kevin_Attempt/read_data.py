@@ -15,8 +15,9 @@ db = firebase.database()
 
 
 while True:
-  time.sleep(0.1)
+  #time.sleep(0.1)
   frame = np.asarray(db.child("frame").get().val())
+  '''
   print(frame)
   print(frame.shape)
   cv2.imshow('frame',frame)
@@ -33,5 +34,5 @@ while True:
     print("Empty arrays")
 
 cv2.destroyAllWindows()
-'''
+
 
