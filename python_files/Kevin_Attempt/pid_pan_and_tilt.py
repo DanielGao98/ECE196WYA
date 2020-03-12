@@ -7,7 +7,7 @@ from simple_pid import PID
 display = False
 
 currentPosX = 8.5
-currentPosY = 9.5
+currentPosY = 7.5
 
 # pan_servo setup
 gpio.setmode(gpio.BOARD)
@@ -56,7 +56,7 @@ def pid_track_face_X(X_position):
         X_diff = -(X_position)*0.00045
         #print(f'X_diff = {X_diff}')
         if minPos < (currentPosX+X_diff) < maxPos:
-            print(f"X = {currentPosX} ")
+            #print(f"X = {currentPosX} ")
             currentPosX = currentPosX + X_diff
         pan_servo.ChangeDutyCycle(currentPosX)
         time.sleep(0.01)
@@ -68,7 +68,7 @@ def pid_track_face_Y(Y_position):
         Y_diff = -(Y_position)*0.0004
         #print(f'Y_diff = {Y_diff}')
         if minPos < (currentPosY+Y_diff) < maxPos:
-            print(f"Y = {currentPosY}")
+            #print(f"Y = {currentPosY}")
             currentPosY = currentPosY + Y_diff
             #print(f'currentY = {currentPosY}')
         tilt_servo.ChangeDutyCycle(currentPosY)
@@ -99,7 +99,7 @@ while True:
     
     if display:    
         cv2.imshow('Video', cv2.flip(frame, 1))
-    
+        print(f"X = {currentPosX} Y = {currentPosY}") 
     if cv2.waitKey(1) == 27:
         break
 
@@ -109,7 +109,7 @@ while True:
         pid_track_face_X(CFaceX)
     if CFaceY != 0:
         pid_track_face_Y(CFaceY)
-        print(CFaceX, CFaceY)
+        #print(CFaceX, CFaceY)
     CFaceX = 0
     CFaceY = 0
 
